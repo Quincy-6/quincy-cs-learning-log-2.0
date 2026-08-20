@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>学习打卡日志</title>
+
+  <!-- 引入 marked.js（Markdown 渲染库），使用 CDN，无需自己下载 -->
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+
+  <!-- 本站样式 -->
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <!-- ===== 顶部导航 ===== -->
+  <header class="site-header">
+    <div class="nav-inner">
+      <a class="brand" href="#/">📚 学习打卡</a>
+      <!-- 导航：点击切换不同视图（通过 hash 路由实现） -->
+      <nav class="nav">
+        <a href="#/" data-nav="home">首页</a>
+        <a href="#/posts" data-nav="posts">日志列表</a>
+        <a href="#/about" data-nav="about">关于我</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+
+    <!-- ===== 视图一：首页（力扣式打卡日历） ===== -->
+    <section id="view-home" class="view">
+      <h1 class="page-title">打卡日历</h1>
+      <p class="subtitle">每写一篇日志就点亮一格，看着它一点点被填满 🌱</p>
+
+      <!-- 日历由 main.js 动态生成并插入到这里 -->
+      <div id="calendar" class="calendar" aria-label="打卡日历"></div>
+
+      <!-- 颜色图例 -->
+      <div id="legend" class="legend"></div>
+
+      <!-- 最近日志预览 -->
+      <h2 class="section-title">最近日志</h2>
+      <div id="recent-posts" class="recent-posts"></div>
+    </section>
+
+    <!-- ===== 视图二：日志列表 ===== -->
+    <section id="view-posts" class="view" hidden>
+      <h1 class="page-title">日志列表</h1>
+      <p class="subtitle">按时间倒序排列的所有打卡记录</p>
+      <div id="posts-list" class="posts-list"></div>
+    </section>
+
+    <!-- ===== 视图三：关于我 ===== -->
+    <section id="view-about" class="view" hidden>
+      <h1 class="page-title">关于我</h1>
+      <!-- ↓↓↓ 这里的内容你可以随意修改 ↓↓↓ -->
+      <div class="about-card">
+        <p>你好，我是这个站点的主人 👋</p>
+        <p>我正在用「每天写一点」的方式坚持学习。这个网站记录了我的成长轨迹。</p>
+        <ul>
+          <li>🎯 目标：每天进步一点点</li>
+          <li>📖 方向：前端开发 / 算法 / 一切有趣的知识</li>
+          <li>✉️ 联系：you@example.com（换成你自己的）</li>
+        </ul>
+        <p>想了解怎么搭建这个站点？查看仓库里的 <code>README.md</code>。</p>
+      </div>
+      <!-- ↑↑↑ 这里的内容你可以随意修改 ↑↑↑ -->
+    </section>
+
+    <!-- ===== 视图四：日志详情（点击日历或列表项时显示） ===== -->
+    <section id="view-post" class="view" hidden>
+      <a href="#/" class="back-link">← 返回首页</a>
+      <article id="post-content" class="post-content">
+        <!-- Markdown 渲染后的内容会插入到这里 -->
+      </article>
+    </section>
+
+  </main>
+
+  <footer class="site-footer">
+    <p>用 ❤️ 与纯前端打造 · <a href="#/about">关于我</a></p>
+  </footer>
+
+  <!-- 本站功能脚本（放在 body 末尾，确保 DOM 已加载） -->
+  <script src="main.js"></script>
+</body>
+</html>
