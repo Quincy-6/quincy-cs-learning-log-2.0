@@ -86,8 +86,6 @@ function showDiag(targetId, diag) {
 /* ===================== 渲染打卡日历 ===================== */
 async function renderCalendar() {
   const { set: postSet, diag } = await loadManifest();
-  // 如果清单加载异常，在日历区域显示诊断信息
-  showDiag('calendar', diag);
   const today = todayStr();
 
   const calendarEl = document.getElementById('calendar');
@@ -155,6 +153,8 @@ async function renderCalendar() {
   calendarEl.innerHTML = '';
   calendarEl.appendChild(monthsRow);
   calendarEl.appendChild(grid);
+  // 诊断信息放在清空之后，避免被 innerHTML='' 擦掉
+  showDiag('calendar', diag);
 
   // —— 图例 ——
   legendEl.innerHTML = `
@@ -165,7 +165,7 @@ async function renderCalendar() {
   `;
 
   // 返回清单，供「最近日志」复用，避免重复请求
-  return postSet;
+  return { set: postSet, diag };
 }
 
 /* ===================== 渲染「最近日志」 ===================== */
@@ -173,10 +173,9 @@ function renderRecent(result) {
   const postSet = result.set || result;         // 兼容旧格式（Set）和新格式（{set, diag}）
   const diag = result.diag || '';
   const box = document.getElementById('recent-posts');
-  showDiag('recent-posts', diag);
   const dates = [...postSet].sort().reverse().slice(0, 5); // 最新 5 篇
   box.innerHTML = '';
-  // 清除之前可能插入的诊断横幅（showDiag 已处理，这里只清空原有内容）
+  showDiag('recent-posts', diag);              // 清空之后再插入，避免被擦掉
   if (dates.length === 0 && !diag) {
     box.innerHTML = '<p class="post-empty">还没有日志，去 posts/ 写第一篇吧！</p>';
     return;
@@ -215,9 +214,9 @@ function makePostCard(date) {
 async function renderPostsList() {
   const { set: postSet, diag } = await loadManifest();
   const box = document.getElementById('posts-list');
-  showDiag('posts-list', diag);
   const dates = [...postSet].sort().reverse(); // 倒序：最新在上
   box.innerHTML = '';
+  showDiag('posts-list', diag);                // 清空之后再插入，避免被擦掉
 
   if (dates.length === 0 && !diag) {
     box.innerHTML = '<p class="post-empty">还没有日志，去 posts/ 写第一篇吧！</p>';
